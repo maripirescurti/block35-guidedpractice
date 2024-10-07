@@ -84,6 +84,13 @@ const fetchUserSkills = async(id)=> {
   return response.rows;
 };
 
+const deleteUserSkill = async({id, user_id})=> {
+  const SQL = `
+    DELETE FROM user_skills
+    WHERE id = $1 AND user_id = $2
+  `;
+  await client.query(SQL, [ id, user_id]);
+};
 
 
 // exports
@@ -96,4 +103,5 @@ module.exports = {
   fetchUsers,
   fetchSkills,
   fetchUserSkills,
+  deleteUserSkill,
 };

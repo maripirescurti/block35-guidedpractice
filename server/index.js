@@ -8,6 +8,8 @@ const {
   fetchUsers,
   fetchSkills,
   fetchUserSkills,
+  // userUserSkill,
+  deleteUserSkill
 } = require('pg');
 
 // init function
@@ -38,6 +40,8 @@ const init = async() => {
     createUserSkill({ user_id: ethyl.id, skill_id: juggling.id}),
     createUserSkill({ user_id: lucy.id, skill_id: dancing.id}),
   ]);
+  console.log(await fetchUserSkills(moe.id));
+  await deleteUserSkill(userSkills[0].id);
   console.log(await fetchUserSkills(moe.id));
 };
 
