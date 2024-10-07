@@ -1,6 +1,7 @@
 // imports
 const pg = require('pg');
 const client = new pg.Client(process.env.DATABASE_URL || 'postgres://localhost/acme_talent_agency_db');
+const uuid = require('uuid');
 
 // methods
 const createTables = async() => {
@@ -27,8 +28,30 @@ const createTables = async() => {
   await client.query(SQL);
 }
 
+const createUser = async({ username, password })=> {
+  const SQL = `
+    INSERT INTO users(id, username, password)
+    VALUES($1, $2, $3)
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [uuid.v4(), username, password]);
+  return response.rows[0];
+}
+
+const createSkill = async({ name })=> {
+  const SQL = `
+    INSERT INTO skills(id, name)
+    VALUES($1, $2)
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [uuid.v4(), name]);
+  return response.rows[0];
+}
+
 // exports
 module.exports = {
   client,
-  createTables
+  createTables,
+  createUser,
+  createSkill
 };
