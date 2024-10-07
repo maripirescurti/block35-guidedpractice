@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "express": "^4.21.0",
     "pg": "^8.13.0",
     "uuid": "^10.0.0"
   }

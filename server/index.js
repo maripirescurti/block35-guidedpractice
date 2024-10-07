@@ -8,9 +8,11 @@ const {
   fetchUsers,
   fetchSkills,
   fetchUserSkills,
-  // userUserSkill,
   deleteUserSkill
 } = require('pg');
+
+const express = require('express');
+const app = express();
 
 // init function
 const init = async() => {
@@ -43,6 +45,11 @@ const init = async() => {
   console.log(await fetchUserSkills(moe.id));
   await deleteUserSkill(userSkills[0].id);
   console.log(await fetchUserSkills(moe.id));
+
+  const port = process.env.PORT || 3000;
+  app.listen(port, ()=> console.log(`listening on ${port}`));
+
 };
+
 
 init ();
