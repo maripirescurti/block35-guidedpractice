@@ -21,9 +21,9 @@ const createTables = async() => {
     );
     CREATE TABLE user_skills(
       id UUID PRIMARY KEY,
-      skill_id UUID REFERENCES skills(id) NOT NULL,
       user_id UUID REFERENCES users(id) NOT NULL,
-      CONSTRAINT unique_skill_user UNIQUE (skill_id, user_id)
+      skill_id UUID REFERENCES skills(id) NOT NULL,
+      CONSTRAINT unique_suser_id_skill_id UNIQUE (user_id, skill_id)
     );
   `;
   await client.query(SQL);
@@ -61,7 +61,8 @@ const createUserSkill = async({ user_id, skill_id })=> {
 
 const fetchUsers = async()=> {
   const SQL = `
-    SELECT * FROM users;
+    SELECT id, username
+    FROM users
   `;
   const response = await client.query(SQL);
   return response.rows;
@@ -69,25 +70,27 @@ const fetchUsers = async()=> {
 
 const fetchSkills = async()=> {
   const SQL = `
-    SELECT * FROM skills;
+    SELECT * 
+    FROM skills
   `;
   const response = await client.query(SQL);
   return response.rows;
 };
 
-const fetchUserSkills = async(id)=> {
+const fetchUserSkills = async(user_id)=> {
   const SQL = `
     SELECT * FROM user_skills
     WHERE user_id = $1
   `;
-  const response = await client.query(SQL, [ id ]);
+  const response = await client.query(SQL, [ user_id ]);
   return response.rows;
 };
 
-const deleteUserSkill = async({id, user_id})=> {
+const deleteUserSkill = async({user_id, id})=> {
   const SQL = `
-    DELETE FROM user_skills
-    WHERE id = $1 AND user_id = $2
+    DELETE 
+    FROM user_skills
+    WHERE user_id = $1 AND id = $2
   `;
   await client.query(SQL, [ id, user_id]);
 };
