@@ -40,6 +40,18 @@ app.get('/api/users/:id/userSkills', async(req, res, next) => {
   }
 });
 
+// post - create
+app.post('/api/users/:id/userSkills', async(req, res, next)=> {
+  try {
+    res.status(201).send(await createUserSkill({ 
+      user_id: req.params.id, 
+      skill_id: req.body.skill_id
+    }));
+  } catch(ex) {
+    next(ex);
+  }
+});
+
 // init function
 const init = async() => {
   await client.connect();
@@ -72,7 +84,8 @@ const init = async() => {
   await deleteUserSkill(userSkills[0].id);
   console.log(await fetchUserSkills(moe.id));
 
-  console.log(`CURL localhost:3000/api/users/${ethyl.id}/userSkills`);
+  console.log(`CURL localhost:3000/api/users/${lucy.id}/userSkills`);
+  console.log(`CURL -X POST localhost:3000/api/users/${lucy.id}/userSkills -d '{"skill_id":"${plateSpinning.id}"}' -H 'Content-Type:application/json'`);
 
   const port = process.env.PORT || 3000;
   app.listen(port, ()=> console.log(`listening on ${port}`));
