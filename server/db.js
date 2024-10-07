@@ -48,10 +48,28 @@ const createSkill = async({ name })=> {
   return response.rows[0];
 }
 
+const fetchUsers = async()=> {
+  const SQL = `
+    SELECT * FROM users;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+}
+
+const fetchSkills = async()=> {
+  const SQL = `
+    SELECT * FROM skills;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+}
+
 // exports
 module.exports = {
   client,
   createTables,
   createUser,
-  createSkill
+  createSkill,
+  fetchUsers,
+  fetchSkills
 };

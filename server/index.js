@@ -3,7 +3,9 @@ const {
   client,
   createTables,
   createUser,
-  createSkill
+  createSkill,
+  fetchUsers,
+  fetchSkills
 } = require('pg');
 
 // init function
@@ -21,8 +23,12 @@ const init = async() => {
     createSkill({ name: 'juggling'}),
     createSkill({ name: 'plate spinning'}),
   ]);
-  console.log(moe.id);
-  console.log(dancing.id);
+
+  const users = await fetchUsers();
+  console.log(users);
+
+  const skills = await fetchSkills();
+  console.log(skills);
 };
 
 init ();
