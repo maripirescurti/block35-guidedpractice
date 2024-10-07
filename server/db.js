@@ -27,7 +27,7 @@ const createTables = async() => {
     );
   `;
   await client.query(SQL);
-}
+};
 
 const createUser = async({ username, password })=> {
   const SQL = `
@@ -37,7 +37,7 @@ const createUser = async({ username, password })=> {
   `;
   const response = await client.query(SQL, [uuid.v4(), username, await bcrypt.hash(password, 5)]);
   return response.rows[0];
-}
+};
 
 const createSkill = async({ name })=> {
   const SQL = `
@@ -47,7 +47,17 @@ const createSkill = async({ name })=> {
   `;
   const response = await client.query(SQL, [uuid.v4(), name]);
   return response.rows[0];
-}
+};
+
+const createUserSkill = async({ user_id, skill_id })=> {
+  const SQL = `
+    INSERT INTO user_skills(id, user_id, skill_id)
+    VALUES($1, $2, $3)
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [uuid.v4(), user_id, skill_id]);
+  return response.rows[0];
+};
 
 const fetchUsers = async()=> {
   const SQL = `
@@ -55,7 +65,7 @@ const fetchUsers = async()=> {
   `;
   const response = await client.query(SQL);
   return response.rows;
-}
+};
 
 const fetchSkills = async()=> {
   const SQL = `
@@ -63,7 +73,18 @@ const fetchSkills = async()=> {
   `;
   const response = await client.query(SQL);
   return response.rows;
-}
+};
+
+const fetchUserSkills = async(id)=> {
+  const SQL = `
+    SELECT * FROM user_skills
+    WHERE user_id = $1
+  `;
+  const response = await client.query(SQL, [ id ]);
+  return response.rows;
+};
+
+
 
 // exports
 module.exports = {
@@ -71,6 +92,8 @@ module.exports = {
   createTables,
   createUser,
   createSkill,
+  createUserSkill,
   fetchUsers,
-  fetchSkills
+  fetchSkills,
+  fetchUserSkills,
 };
