@@ -14,6 +14,24 @@ const {
 const express = require('express');
 const app = express();
 
+//APP ROUTES
+// get - read
+app.get('/api/users', async(req, res, next) => {
+  try {
+    res.send(await fetchUsers());
+  } catch(ex) {
+    next(ex);
+  }
+});
+
+app.get('/api/skills', async(req, res, next) => {
+  try {
+    res.send(await fetchSkills());
+  } catch(ex) {
+    next(ex);
+  }
+});
+
 // init function
 const init = async() => {
   await client.connect();
