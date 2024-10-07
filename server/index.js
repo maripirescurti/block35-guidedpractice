@@ -32,6 +32,14 @@ app.get('/api/skills', async(req, res, next) => {
   }
 });
 
+app.get('/api/users/:id/userSkills', async(req, res, next) => {
+  try {
+    res.send(await fetchUserSkills(req.params.id));
+  } catch(ex) {
+    next(ex);
+  }
+});
+
 // init function
 const init = async() => {
   await client.connect();
@@ -63,6 +71,8 @@ const init = async() => {
   console.log(await fetchUserSkills(moe.id));
   await deleteUserSkill(userSkills[0].id);
   console.log(await fetchUserSkills(moe.id));
+
+  console.log(`CURL localhost:3000/api/users/${ethyl.id}/userSkills`);
 
   const port = process.env.PORT || 3000;
   app.listen(port, ()=> console.log(`listening on ${port}`));
