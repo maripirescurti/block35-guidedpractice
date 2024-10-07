@@ -52,6 +52,19 @@ app.post('/api/users/:id/userSkills', async(req, res, next)=> {
   }
 });
 
+// delete
+app.post('/api/users/:userId/userSkills/:id', async(req, res, next)=> {
+  try {
+    await deleteUserSkill({ 
+      id: req.params.id, 
+      user_id:req.params.userId 
+    });
+    res.status(201);
+  } catch(ex) {
+    next(ex);
+  }
+});
+
 // init function
 const init = async() => {
   await client.connect();
